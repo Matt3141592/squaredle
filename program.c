@@ -14,7 +14,9 @@ typedef struct node
 const int N = 262144;
 const int rows = 5;
 const int cols = 5;
+const int MAX = 10;
 node *table[262144];
+node *ans[11];
 
 int hash(char *str)
 {
@@ -67,10 +69,10 @@ void load(void)
 	fclose(in);
 }
 
-void unload(void)
+void unload(node *list[], int x)
 {
-	for (int i = 0; i < N; i++)
-		freelist(table[i]);
+	for (int i = 0; i < x; i++)
+		freelist(list[i]);
 }
 
 void print(void)
@@ -87,16 +89,75 @@ void print(void)
 	}
 }
 
+void exists(char *word, int len)
+{
+	node *temp = ans[len];
+	while (temp)
+	{
+		if (!strcasecmp(word, temp -> str))
+			return;
+		temp = temp -> next;
+	}
+	
+	node *n = malloc(sizeof(node));
+	n -> next = ans[len];
+	strcpy(n -> str, word);
+	ans[len] = n;
+}
+
+node *quick(node *list)
+{
+    if (list == NULL)
+        return NULL;
+    node *small = NULL;
+    node *big = NULL;
+    node *piv = list;
+    
+    list = list -> next;
+    while (list != NULL)
+    {
+        node *temp = list -> next;
+        if (strcmp(list -> str, piv -> str) < 0)
+        {
+            list -> next = small;
+            small = list;
+        }
+        else
+        {
+            list -> next = big;
+            big = list;
+        }
+        list = temp;
+    }
+    small = quick(small);
+    piv -> next = quick(big);
+    
+    node *temp = small;
+    if (temp != NULL)
+    {
+        while (temp -> next != NULL)
+            temp = temp -> next;
+        temp -> next = piv;
+    }
+    else
+        small = piv;
+    return small;
+}
+
 void squaredle(char grid[rows][cols], int used[rows][cols], int x, int y, char word[], int len)
 {
 	if (used[x][y])
 		return;
+		
+	if (len >= MAX)
+		return;
+		
 	used[x][y] = 1;
 	
 	word[len++] = grid[x][y];
 	word[len] = '\0';
 	if (check(word))
-		printf("%s\n", word);
+		exists(word, len);
 	
 	if (x + 1 < rows)
 		squaredle(grid, used, x + 1, y, word, len);
@@ -122,11 +183,7 @@ int main(void)
 {
 	clock_t begin = clock();
 	load();
-	char grid[5][5] = {{'0','y','r','n','0'},
-					   {'t','e','i','e','g'},
-					   {'v','h','0','y','n'},
-					   {'e','e','w','o','a'},
-					   {'0','r','y','d','0'}}; 
+	char grid[5][5] = {"0yrn0", "teieg", "vh0yn", "eewoa", "0ryd0"};
 	int used[5][5] = {0};
 	
 	for (int i = 0; i < rows; i++)
@@ -138,7 +195,24 @@ int main(void)
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 			squaredle(grid, used, i, j, word, 0);
-	unload();
-	printf("%f\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
+			
+	for (int i = 4; i <= MAX; i++)
+	{
+		printf("\n%i letters: ", i);
+		ans[i] = quick(ans[i]);
+		node *temp = ans[i];
+		int count = 0;
+		while (temp)
+		{
+			if (!(count++ & 3))
+				printf("\n");
+			printf("%s   ", temp -> str);
+			temp = temp -> next;
+		}
+		printf("\n");
+	}
+	unload(table, N);
+	unload(ans, MAX + 1);
+	printf("\n%f\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
 }
 	
