@@ -12,11 +12,15 @@ typedef struct node
 }node;
 
 const int N = 262144;
-const int rows = 5;
-const int cols = 5;
-const int MAX = 10;
 node *table[262144];
-node *ans[11];
+node *ans[20];
+
+//change these 5 variables
+const int rows = 3;
+const int cols = 3;
+const int MAX = 7;
+char grid[3][3] = {"ded", "uta", "llr"}; //[rows][cols] use 0 for blanks
+int used[4][4]; //[rows+1][cols+1]
 
 int hash(char *str)
 {
@@ -58,7 +62,7 @@ void load(void)
 	char str[50];
 	
 	while (fscanf(in, "%s", str) != EOF)
-		if (strlen(str) > 3)
+		if (strlen(str) > 3 && strlen(str) <= MAX)
 		{
 			int x = hash(str);
 			node *n = malloc(sizeof(node));
@@ -144,8 +148,11 @@ node *quick(node *list)
     return small;
 }
 
-void squaredle(char grid[rows][cols], int used[rows+2][cols+2], int x, int y, char word[], int len)
+void squaredle(char grid[rows][cols], int used[rows+1][cols+1], int x, int y, char word[], int len)
 {
+	if (x == rows || y == cols)
+		return;
+		
 	if (!used[x+1][y+1])
 		return;
 		
@@ -175,8 +182,6 @@ int main(void)
 {
 	clock_t begin = clock();
 	load();
-	char grid[5][5] = {"0yrn0", "teieg", "vh0yn", "eewoa", "0ryd0"};
-	int used[7][7] = {0};
 	
 	for (int i = 1; i <= rows; i++)
 		for (int j = 1; j <= cols; j++)
