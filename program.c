@@ -144,39 +144,31 @@ node *quick(node *list)
     return small;
 }
 
-void squaredle(char grid[rows][cols], int used[rows][cols], int x, int y, char word[], int len)
+void squaredle(char grid[rows][cols], int used[rows+2][cols+2], int x, int y, char word[], int len)
 {
-	if (used[x][y])
+	if (!used[x+1][y+1])
 		return;
 		
 	if (len >= MAX)
 		return;
 		
-	used[x][y] = 1;
+	used[x+1][y+1] = 0;
 	
 	word[len++] = grid[x][y];
 	word[len] = '\0';
 	if (check(word))
 		exists(word, len);
-	
-	if (x + 1 < rows)
-		squaredle(grid, used, x + 1, y, word, len);
-	if (x - 1 >= 0)
-		squaredle(grid, used, x - 1, y, word, len);
-	if (y + 1 < cols)
-		squaredle(grid, used, x, y + 1, word, len);
-	if (y - 1 >= 0)
-		squaredle(grid, used, x, y - 1, word, len);
-	if ((x - 1 >= 0) && (y - 1 >= 0))
-		squaredle(grid, used, x - 1, y - 1, word, len);
-	if ((x + 1 < rows) && (y - 1 >= 0))
-		squaredle(grid, used, x + 1, y - 1, word, len);
-	if ((x - 1 >= 0) && (y + 1 < cols))
-		squaredle(grid, used, x - 1, y + 1, word, len);
-	if ((x + 1 < rows) && (y + 1 < cols))
-		squaredle(grid, used, x + 1, y + 1, word, len);
+
+	squaredle(grid, used, x + 1, y, word, len);
+	squaredle(grid, used, x - 1, y, word, len);
+	squaredle(grid, used, x, y + 1, word, len);
+	squaredle(grid, used, x, y - 1, word, len);
+	squaredle(grid, used, x - 1, y - 1, word, len);
+	squaredle(grid, used, x + 1, y - 1, word, len);
+	squaredle(grid, used, x - 1, y + 1, word, len);
+	squaredle(grid, used, x + 1, y + 1, word, len);
 		
-	used[x][y] = 0;
+	used[x+1][y+1] = 1;
 }
 
 int main(void)
@@ -184,12 +176,12 @@ int main(void)
 	clock_t begin = clock();
 	load();
 	char grid[5][5] = {"0yrn0", "teieg", "vh0yn", "eewoa", "0ryd0"};
-	int used[5][5] = {0};
+	int used[7][7] = {0};
 	
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)
-			used[i][j] = '0' == grid[i][j];
-
+	for (int i = 1; i <= rows; i++)
+		for (int j = 1; j <= cols; j++)
+			used[i][j] = '0' != grid[i-1][j-1];
+			
 	char word[30];
 	
 	for (int i = 0; i < rows; i++)
