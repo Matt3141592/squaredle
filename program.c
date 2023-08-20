@@ -19,15 +19,15 @@ node *ans[20];
 const int rows = 4;
 const int cols = 4;
 const int MAX = 12;
-char grid[10][10] = {"entl", "mlea", "ielx", "lrpe"}; //[rows][cols] use 0 for blanks. just need to be > rows and cols
-int used[10][10]; //[rows+1][cols+1] need to be > rows and cols
+char grid[10][10] = {"entl", "mlea", "ielx", "lrpe"}; //[>=rows][>=cols] use 0 for blanks. lower case
+int used[10][10]; //[>=rows+1][>=cols+1] 
 
 int hash(char *str)
 {
 	unsigned long hash = 5381;
 	
 	while (*str)
-		hash = ((hash << 5) + hash) + tolower(*(str++));
+		hash = ((hash << 5) + hash) + *(str++);
 	
 	return hash & (N - 1);
 }
@@ -111,14 +111,14 @@ void exists(char *word, int len)
 
 node *quick(node *list)
 {
-	if (list == NULL)
+	if (!list)
 		return NULL;
 	node *small = NULL;
 	node *big = NULL;
 	node *piv = list;
 	
 	list = list -> next;
-	while (list != NULL)
+	while (list)
 	{
 		node *temp = list -> next;
 		if (strcmp(list -> str, piv -> str) < 0)
@@ -137,9 +137,9 @@ node *quick(node *list)
 	piv -> next = quick(big);
 	
 	node *temp = small;
-	if (temp != NULL)
+	if (temp)
 	{
-		while (temp -> next != NULL)
+		while (temp -> next)
 			temp = temp -> next;
 		temp -> next = piv;
 	}
@@ -149,11 +149,11 @@ node *quick(node *list)
 }
 
 void squaredle(int x, int y, char word[], int len)
-{
-	if (x == rows || y == cols)
+{	
+	if (!used[x+1][y+1])
 		return;
 		
-	if (!used[x+1][y+1])
+	if (x == rows || y == cols)
 		return;
 		
 	if (len >= MAX)
@@ -165,15 +165,10 @@ void squaredle(int x, int y, char word[], int len)
 	word[len] = '\0';
 	if (check(word))
 		exists(word, len);
-
-	squaredle(x + 1, y, word, len);
-	squaredle(x - 1, y, word, len);
-	squaredle(x, y + 1, word, len);
-	squaredle(x, y - 1, word, len);
-	squaredle(x - 1, y - 1, word, len);
-	squaredle(x + 1, y - 1, word, len);
-	squaredle(x - 1, y + 1, word, len);
-	squaredle(x + 1, y + 1, word, len);
+	
+	for (int i = -1; i <= 1; i++)
+		for (int j = -1; j <= 1; j++)
+			squaredle(x + i, y + j, word, len);
 		
 	used[x+1][y+1] = 1;
 }
