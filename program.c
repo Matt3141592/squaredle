@@ -16,11 +16,11 @@ node *table[262144];
 node *ans[20];
 
 //change these 5 variables
-const int rows = 3;
-const int cols = 3;
-const int MAX = 7;
-char grid[3][3] = {"ded", "uta", "llr"}; //[rows][cols] use 0 for blanks
-int used[4][4]; //[rows+1][cols+1]
+const int rows = 4;
+const int cols = 4;
+const int MAX = 12;
+char grid[10][10] = {"entl", "mlea", "ielx", "lrpe"}; //[rows][cols] use 0 for blanks. just need to be > rows and cols
+int used[10][10]; //[rows+1][cols+1] need to be > rows and cols
 
 int hash(char *str)
 {
@@ -148,7 +148,7 @@ node *quick(node *list)
     return small;
 }
 
-void squaredle(char grid[rows][cols], int used[rows+1][cols+1], int x, int y, char word[], int len)
+void squaredle(int x, int y, char word[], int len)
 {
 	if (x == rows || y == cols)
 		return;
@@ -166,14 +166,14 @@ void squaredle(char grid[rows][cols], int used[rows+1][cols+1], int x, int y, ch
 	if (check(word))
 		exists(word, len);
 
-	squaredle(grid, used, x + 1, y, word, len);
-	squaredle(grid, used, x - 1, y, word, len);
-	squaredle(grid, used, x, y + 1, word, len);
-	squaredle(grid, used, x, y - 1, word, len);
-	squaredle(grid, used, x - 1, y - 1, word, len);
-	squaredle(grid, used, x + 1, y - 1, word, len);
-	squaredle(grid, used, x - 1, y + 1, word, len);
-	squaredle(grid, used, x + 1, y + 1, word, len);
+	squaredle(x + 1, y, word, len);
+	squaredle(x - 1, y, word, len);
+	squaredle(x, y + 1, word, len);
+	squaredle(x, y - 1, word, len);
+	squaredle(x - 1, y - 1, word, len);
+	squaredle(x + 1, y - 1, word, len);
+	squaredle(x - 1, y + 1, word, len);
+	squaredle(x + 1, y + 1, word, len);
 		
 	used[x+1][y+1] = 1;
 }
@@ -191,10 +191,12 @@ int main(void)
 	
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
-			squaredle(grid, used, i, j, word, 0);
+			squaredle(i, j, word, 0);
 			
 	for (int i = 4; i <= MAX; i++)
 	{
+		if (!ans[i])
+			continue;
 		printf("\n%i letters: ", i);
 		ans[i] = quick(ans[i]);
 		node *temp = ans[i];
