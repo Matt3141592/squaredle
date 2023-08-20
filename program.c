@@ -34,26 +34,26 @@ int hash(char *str)
 
 int check(char *word)
 {
-    node *cursor = table[hash(word)];
-    
-    while (cursor != NULL)
-    {
-        if (!strcasecmp(cursor -> str, word))
-            return 1;
-        cursor = cursor -> next;
-    }
-    return 0;
+	node *cursor = table[hash(word)];
+	
+	while (cursor != NULL)
+	{
+		if (!strcasecmp(cursor -> str, word))
+			return 1;
+		cursor = cursor -> next;
+	}
+	return 0;
 }
 
 void freelist(node *list)
 {
-    node *prev = list;
-    while (list)
-    {
-        list = list -> next;
-        free(prev);
-        prev = list;
-    }
+	node *prev = list;
+	while (list)
+	{
+		list = list -> next;
+		free(prev);
+		prev = list;
+	}
 }
 
 void load(void)
@@ -111,41 +111,41 @@ void exists(char *word, int len)
 
 node *quick(node *list)
 {
-    if (list == NULL)
-        return NULL;
-    node *small = NULL;
-    node *big = NULL;
-    node *piv = list;
-    
-    list = list -> next;
-    while (list != NULL)
-    {
-        node *temp = list -> next;
-        if (strcmp(list -> str, piv -> str) < 0)
-        {
-            list -> next = small;
-            small = list;
-        }
-        else
-        {
-            list -> next = big;
-            big = list;
-        }
-        list = temp;
-    }
-    small = quick(small);
-    piv -> next = quick(big);
-    
-    node *temp = small;
-    if (temp != NULL)
-    {
-        while (temp -> next != NULL)
-            temp = temp -> next;
-        temp -> next = piv;
-    }
-    else
-        small = piv;
-    return small;
+	if (list == NULL)
+		return NULL;
+	node *small = NULL;
+	node *big = NULL;
+	node *piv = list;
+	
+	list = list -> next;
+	while (list != NULL)
+	{
+		node *temp = list -> next;
+		if (strcmp(list -> str, piv -> str) < 0)
+		{
+			list -> next = small;
+			small = list;
+		}
+		else
+		{
+			list -> next = big;
+			big = list;
+		}
+		list = temp;
+	}
+	small = quick(small);
+	piv -> next = quick(big);
+	
+	node *temp = small;
+	if (temp != NULL)
+	{
+		while (temp -> next != NULL)
+			temp = temp -> next;
+		temp -> next = piv;
+	}
+	else
+		small = piv;
+	return small;
 }
 
 void squaredle(int x, int y, char word[], int len)
