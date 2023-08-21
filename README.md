@@ -1,6 +1,8 @@
 # Squaredle
-A program that recursively checks all routes to produce possible words that are checked against a dictionary.//
-rows and cols must be changed to match the dimensions of the puzzle.//
+A program that recursively checks all routes to produce possible words that are checked against a dictionary.
+
+rows and cols must be changed to match the dimensions of the puzzle.
+
 The size of grid and used arrays just need to big enough (check comments). Can leave as 10 and 10 as puzzle doesn't get that big.
 
 
