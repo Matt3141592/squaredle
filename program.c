@@ -153,9 +153,6 @@ void squaredle(int x, int y, char word[], int len)
 	if (!used[x+1][y+1])
 		return;
 		
-	if (x == rows || y == cols)
-		return;
-		
 	if (len >= MAX)
 		return;
 		
