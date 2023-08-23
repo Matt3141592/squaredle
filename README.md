@@ -9,4 +9,8 @@ The size of grid and used arrays just need to big enough (check comments). Can l
 
 For the above puzzle, grid should be -> char grid[10][10] = {"0yrn0", "teieg", "vh0yn", "eewoa", "0ryd0"} and rows and cols should both be 5.
 
-Compile with: make program
+Compile with: make program or make v2
+
+v2 runs about 9 times quicker than program does as it uses a trie instead of a hash table to store the dictionary. This allows it to stop searching for a word once it knows that there are no words that starts with its prefix.
+
+MAX does not affect v2 as much but still helps as less words are loaded into the trie.
