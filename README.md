@@ -14,3 +14,5 @@ Compile with: make program or make v2
 v2 executes about 8 times quicker than program as it uses a trie instead of a hash table to store the dictionary. This allows it to stop searching for a word once it knows that there are no words that starts with a prefix.
 
 MAX does not affect v2 as much but still helps as less words are loaded into the trie.
+
+Can use a larger dictionary by following the execution command with any argument e.g. ./program hello
