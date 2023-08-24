@@ -19,7 +19,7 @@ node *ans[20];
 const int rows = 4;
 const int cols = 4;
 const int MAX = 12;
-char grid[10][10] = {"entl", "mlea", "ielx", "lrpe"}; //[>=rows][>=cols] use 0 for blanks. lower case
+char grid[10][10] = {"eocb", "rkab", "eaul", "wlpl"}; //[>=rows][>=cols] use 0 for blanks. lower case
 int used[10][10]; //[>=rows+1][>=cols+1] 
 
 int hash(char *str)
@@ -56,10 +56,12 @@ void freelist(node *list)
 	}
 }
 
-void load(void)
+void load(int x)
 {
-	FILE *in = fopen("dictionary.txt", "r");
+	char dics[2][15] = {"dictionary.txt", "large.txt"};
+	FILE *in = fopen(dics[x], "r");
 	char str[50];
+	printf("%s\n", dics[x]);
 	
 	while (fscanf(in, "%s", str) != EOF)
 		if (strlen(str) > 3 && strlen(str) <= MAX)
@@ -170,10 +172,13 @@ void squaredle(int x, int y, char word[], int len)
 	used[x+1][y+1] = 1;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	clock_t begin = clock();
-	load();
+	if (argc > 1)
+		load(1);
+	else
+		load(0);
 	
 	for (int i = 1; i <= rows; i++)
 		for (int j = 1; j <= cols; j++)
