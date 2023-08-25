@@ -14,6 +14,7 @@ typedef struct node
 const int N = 262144;
 node *table[262144];
 node *ans[20];
+int letters[26];
 
 //change these 5 variables
 const int rows = 4;
@@ -66,6 +67,8 @@ void load(int x)
 	while (fscanf(in, "%s", str) != EOF)
 		if (strlen(str) > 3 && strlen(str) <= MAX)
 		{
+			if (!letters[(*str) - 'a'])
+				continue;
 			int x = hash(str);
 			node *n = malloc(sizeof(node));
 			strcpy(n -> str, str);
@@ -175,14 +178,18 @@ void squaredle(int x, int y, char word[], int len)
 int main(int argc, char *argv[])
 {
 	clock_t begin = clock();
+	
+	for (int i = 1; i <= rows; i++)
+		for (int j = 1; j <= cols; j++)
+		{
+			used[i][j] = '0' != grid[i-1][j-1];
+			letters[grid[i-1][j-1] - 'a'] = 1;
+		}
+			
 	if (argc > 1)
 		load(1);
 	else
 		load(0);
-	
-	for (int i = 1; i <= rows; i++)
-		for (int j = 1; j <= cols; j++)
-			used[i][j] = '0' != grid[i-1][j-1];
 			
 	char word[30];
 	

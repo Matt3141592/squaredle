@@ -17,6 +17,7 @@ typedef struct linked
 
 node *tree;
 linked *ans[20];
+int letters[26];
 
 //change these 5 variables
 const int rows = 4;
@@ -55,6 +56,9 @@ node *newNode(void) // creates a new empty node.
 
 void insert(node *root, char *str) // inserts word
 {
+	if (!letters[(*str) - 'a'])
+		return;
+		
 	while (*str && *str != '\'')
 	{
 		if (!root -> next[(*str) - 'a'])
@@ -182,14 +186,18 @@ int main(int argc, char *argv[])
 {
 	clock_t begin = clock();
 	tree = newNode();
+	
+	for (int i = 1; i <= rows; i++)
+		for (int j = 1; j <= cols; j++)
+		{
+			used[i][j] = '0' != grid[i-1][j-1];
+			letters[grid[i-1][j-1] - 'a'] = 1;
+		}
+		
 	if (argc > 1)
 		load(1);
 	else
 		load(0);
-	
-	for (int i = 1; i <= rows; i++)
-		for (int j = 1; j <= cols; j++)
-			used[i][j] = '0' != grid[i-1][j-1];
 			
 	char word[30];
 	
