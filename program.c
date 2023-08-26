@@ -28,7 +28,7 @@ int hash(char *str)
 	unsigned long hash = 5381;
 	
 	while (*str)
-		hash = ((hash << 5) + hash) + *(str++);
+		hash = ((hash << 5) + hash) + *str++;
 	
 	return hash & (N - 1);
 }
@@ -67,7 +67,7 @@ void load(int x)
 	while (fscanf(in, "%s", str) != EOF)
 		if (strlen(str) > 3 && strlen(str) <= MAX)
 		{
-			if (!letters[(*str) - 'a'])
+			if (!letters[*str - 'a'])
 				continue;
 			int x = hash(str);
 			node *n = malloc(sizeof(node));

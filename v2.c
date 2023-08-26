@@ -56,15 +56,15 @@ node *newNode(void) // creates a new empty node.
 
 void insert(node *root, char *str) // inserts word
 {
-	if (!letters[(*str) - 'a'])
+	if (!letters[*str - 'a'])
 		return;
 		
 	while (*str && *str != '\'')
 	{
-		if (!root -> next[(*str) - 'a'])
-			root -> next[(*str) - 'a'] = newNode();
+		if (!root -> next[*str - 'a'])
+			root -> next[*str - 'a'] = newNode();
 		
-		root = root -> next[(*(str++)) - 'a'];
+		root = root -> next[*str++ - 'a'];
 	}
 	
 	root -> end = 1;
@@ -95,9 +95,9 @@ int check(node *root, char *str) //returns 0 if word is in the dictionary
 {
 	while (*str)
 	{
-		if (!root -> next[(*str) - 'a'])
+		if (!root -> next[*str - 'a'])
 			return 2;
-		root = root -> next[(*(str++)) - 'a'];
+		root = root -> next[*str++ - 'a'];
 	}
 	return !root -> end;
 }
