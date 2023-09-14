@@ -16,7 +16,7 @@ typedef struct linked
 }linked;
 
 node *tree;
-linked *ans[20];
+linked *ans[36];
 int letters[26];
 
 //change these 5 variables
