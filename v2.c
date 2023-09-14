@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 		for (int j = 0; j < cols; j++)
 			squaredle(i, j, word, 0);
 			
-	for (int i = 4; i < 20; i++)
+	for (int i = 4; i < 36; i++)
 	{
 		if (!ans[i])
 			continue;
