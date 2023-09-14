@@ -20,10 +20,10 @@ linked *ans[20];
 int letters[26];
 
 //change these 5 variables
-const int rows = 4;
-const int cols = 4;
-const int MAX = 12;
-char grid[10][10] = {"eocb", "rkab", "eaul", "wlpl"}; //[>=rows][>=cols] use 0 for blanks. lower case
+const int rows = 6;
+const int cols = 6;
+const int MAX = 36;
+char grid[10][10] = {"cexhpc", "aniaay", "cttmrm", "cirgde", "enooir", "eltcal"}; //[>=rows][>=cols] use 0 for blanks. lower case
 int used[10][10]; //[>=rows+1][>=cols+1] 
 
 void freelist(linked *list)
@@ -56,9 +56,6 @@ node *newNode(void) // creates a new empty node.
 
 void insert(node *root, char *str) // inserts word
 {
-	if (!letters[*str - 'a'])
-		return;
-		
 	while (*str && *str != '\'')
 	{
 		if (!root -> next[*str - 'a'])
@@ -70,15 +67,27 @@ void insert(node *root, char *str) // inserts word
 	root -> end = 1;
 }
 
+int valid(char *str)
+{
+	int a[26] = {0};
+	while (*str)
+		a[*str++ - 'a']++;
+		
+	for (int i = 0; i < 26; i++)
+		if (a[i] > letters[i])
+			return 0;
+	return 1;
+}
+
 void load(int x)
 {
-	char dics[2][15] = {"dictionary.txt", "large.txt"};
+	char dics[3][15] = {"dictionary.txt", "large.txt", "nwl.txt"};
 	FILE *in = fopen(dics[x], "r");
 	char buffer[50];
 	printf("%s\n", dics[x]);
 	
 	while (fscanf(in, "%s", buffer) != EOF)
-		if (strlen(buffer) > 3 && strlen(buffer) <= MAX)
+		if (strlen(buffer) > 3 && valid(buffer) && strlen(buffer) <= MAX)
 			insert(tree, buffer);
 	fclose(in);
 }
@@ -99,19 +108,14 @@ int check(node *root, char *str) //returns 0 if word is in the dictionary
 			return 2;
 		root = root -> next[*str++ - 'a'];
 	}
-	return !root -> end;
+	if (!root -> end)
+		return 1;
+	root -> end = 0;
+	return 0;
 }
 
-void exists(char *word, int len)
+void add(char *word, int len)
 {
-	linked *temp = ans[len];
-	while (temp)
-	{
-		if (!strcasecmp(word, temp -> str))
-			return;
-		temp = temp -> next;
-	}
-	
 	linked *n = malloc(sizeof(linked));
 	n -> next = ans[len];
 	strcpy(n -> str, word);
@@ -168,7 +172,7 @@ void squaredle(int x, int y, char word[], int len)
 	word[len] = '\0';
 	int a = check(tree, word);
 	if (!a)
-		exists(word, len);
+		add(word, len);
 	if (a == 2)
 	{
 		used[x+1][y+1] = 1;
@@ -191,12 +195,14 @@ int main(int argc, char *argv[])
 		for (int j = 1; j <= cols; j++)
 		{
 			used[i][j] = '0' != grid[i-1][j-1];
-			letters[grid[i-1][j-1] - 'a'] = 1;
+			letters[grid[i-1][j-1] - 'a']++;
 		}
 		
-	if (argc > 1)
+	if (argc > 2)
 		load(1);
-	else
+	else if (argc == 2)
+		load(2);
+	else 
 		load(0);
 			
 	char word[30];
