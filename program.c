@@ -13,14 +13,14 @@ typedef struct node
 
 const int N = 262144;
 node *table[262144];
-node *ans[20];
+node *ans[36];
 int letters[26];
 
 //change these 5 variables
-const int rows = 4;
-const int cols = 4;
-const int MAX = 12;
-char grid[10][10] = {"eocb", "rkab", "eaul", "wlpl"}; //[>=rows][>=cols] use 0 for blanks. lower case
+const int rows = 6;
+const int cols = 6;
+const int MAX = 36;
+char grid[10][10] = {"cexhpc", "aniaay", "cttmrm", "cirgde", "enooir", "eltcal"}; //[>=rows][>=cols] use 0 for blanks. lower case
 int used[10][10]; //[>=rows+1][>=cols+1] 
 
 int hash(char *str)
@@ -59,7 +59,7 @@ void freelist(node *list)
 
 void load(int x)
 {
-	char dics[2][15] = {"dictionary.txt", "large.txt"};
+	char dics[3][15] = {"dictionary.txt", "large.txt", "nwl.txt"};
 	FILE *in = fopen(dics[x], "r");
 	char str[50];
 	printf("%s\n", dics[x]);
@@ -186,9 +186,11 @@ int main(int argc, char *argv[])
 			letters[grid[i-1][j-1] - 'a'] = 1;
 		}
 			
-	if (argc > 1)
+	if (argc > 2)
 		load(1);
-	else
+	else if (argc == 2)
+		load(2);
+	else 
 		load(0);
 			
 	char word[30];
