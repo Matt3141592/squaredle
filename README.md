@@ -15,4 +15,4 @@ v2 executes about 8 times quicker than program as it uses a trie instead of a ha
 
 MAX does not affect v2 as much but still helps as less words are loaded into the trie.
 
-Can use a larger dictionary by following the execution command with any argument e.g. ./program hello
+NWL dictionary is used by default but other dictionaries can be used by changing the number of arguments.
