@@ -21,7 +21,7 @@ const int rows = 6;
 const int cols = 6;
 const int MAX = 36;
 char grid[10][10] = {"cexhpc", "aniaay", "cttmrm", "cirgde", "enooir", "eltcal"}; //[>=rows][>=cols] use 0 for blanks. lower case
-int used[10][10]; //[>=rows+1][>=cols+1] 
+int used[10][10]; //[>=rows+2][>=cols+2] 
 
 int hash(char *str)
 {
@@ -187,11 +187,11 @@ int main(int argc, char *argv[])
 		}
 			
 	if (argc > 2)
-		load(1);
-	else if (argc == 2)
-		load(2);
-	else 
 		load(0);
+	else if (argc == 2)
+		load(1);
+	else 
+		load(2);
 			
 	char word[30];
 	
