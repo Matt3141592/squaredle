@@ -20,10 +20,10 @@ linked *ans[36];
 int letters[26];
 
 //change these 5 variables
-const int rows = 6;
-const int cols = 6;
+const int rows = 5;
+const int cols = 5;
 const int MAX = 36;
-char grid[10][10] = {"cexhpc", "aniaay", "cttmrm", "cirgde", "enooir", "eltcal"}; //[>=rows][>=cols] use 0 for blanks. lower case
+char grid[10][10] = {"0gud0", "nzist", "ienic", "ltftr", "0ecu0"}; //[>=rows][>=cols] use 0 for blanks. lower case
 int used[10][10]; //[>=rows+2][>=cols+2] 
 
 void freelist(linked *list)
@@ -186,6 +186,13 @@ void squaredle(int x, int y, char word[], int len)
 	used[x+1][y+1] = 1;
 }		
 
+void init_ans(void)
+{
+	for (int i = 0; i < MAX; i++)
+		ans[i] = NULL;
+}
+
+
 int main(int argc, char *argv[])
 {
 	clock_t begin = clock();
@@ -206,6 +213,7 @@ int main(int argc, char *argv[])
 		load(2);
 			
 	char word[30];
+	init_ans();
 	
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
@@ -216,8 +224,7 @@ int main(int argc, char *argv[])
 		if (!ans[i])
 			continue;
 		printf("\n%i letters: ", i);
-		ans[i] = quick(ans[i]);
-		linked *temp = ans[i];
+		linked *temp = quick(ans[i]);
 		int count = 0;
 		while (temp)
 		{
@@ -233,4 +240,3 @@ int main(int argc, char *argv[])
 	printf("\n%f\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
 }
 		
-			
