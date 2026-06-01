@@ -20,10 +20,10 @@ linked *ans[36];
 int letters[26];
 
 //change these 5 variables
-const int rows = 5;
-const int cols = 5;
+const int rows = 7;
+const int cols = 7;
 const int MAX = 36;
-char grid[10][10] = {"0gud0", "nzist", "ienic", "ltftr", "0ecu0"}; //[>=rows][>=cols] use 0 for blanks. lower case
+char grid[10][10] = {"enedlbs", "rfthale", "osyiwlu", "adn0oja", "catenoh", "mmldrll", "0eedoy0"}; //[>=rows][>=cols] use 0 for blanks. lower case
 int used[10][10]; //[>=rows+2][>=cols+2] 
 
 void freelist(linked *list)
@@ -35,12 +35,6 @@ void freelist(linked *list)
 		free(prev);
 		prev = list;
 	}
-}
-
-void unloadlinked()
-{
-	for (int i = 0; i < 36; i++)
-		freelist(ans[i]);
 }
 
 node *newNode(void) // creates a new empty node.
@@ -225,6 +219,7 @@ int main(int argc, char *argv[])
 			continue;
 		printf("\n%i letters: ", i);
 		linked *temp = quick(ans[i]);
+		linked *temp_root = temp;
 		int count = 0;
 		while (temp)
 		{
@@ -234,9 +229,9 @@ int main(int argc, char *argv[])
 			temp = temp -> next;
 		}
 		printf("\n");
+		freelist(temp_root);
 	}
 	unload(tree);
-	unloadlinked();
 	printf("\n%f\n", (double)(clock() - begin) / CLOCKS_PER_SEC);
 }
 		
